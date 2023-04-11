@@ -14,24 +14,27 @@ function getParkInfo(natPark) {
   
   
 
-  // run fetch with park name
+//   get twdg codes
   function getTWDG() {
-      fetch (`https://api.github.com/repos/tdwg/wgsrpd/contents/109-488-1-ED/2nd%20Edition/tblLevel3.txt`).then(function (response) {
-        response.json().then(function (data) {
-            console.log("data:", atob(data.content))
+      fetch (`https://api.github.com/repos/tdwg/wgsrpd/contents/109-488-1-ED/2nd%20Edition/tblLevel4.txt`).then(function (response) {
+         response.json().then(function (data) {
+            let twdg = atob(data.content)
+            let codeArray = twdg.split('\n')
+            codeArray.splice(0,1)
+            let locationArray = []
             
+            for (let i = 0; i < codeArray.length; i++){
+                locationArray.push(codeArray[i].split('*')[1])
+            }
+          console.log("locationArray:", locationArray)
+          console.log("codeArray:", codeArray)
         });
-      }); 
+    }); 
   }
-//   function getTWDG() {
-//       fetch (`https://api.github.com/repos/tdwg/wgsrpd/contents/readme.md`).then(function (response) {
-//         response.json().then(function (data) {
-//             console.log("data:", atob(data))
-            
-//         });
-//       }); 
-//   }
-  getTWDG()
+
+
+
+getTWDG()
   // TODO: return state location
   // TODO: in the future include accesibility and other park specific info
   
