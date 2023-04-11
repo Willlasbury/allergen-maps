@@ -77,7 +77,8 @@ function displayPlantInfo(e){
             // TODO: other locations
 
 let string = 'zion national park'
-let test = fetch(`https://developer.nps.gov/api/v1/passportstamplocations?q=${string}&limit=5&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`).then(function(response){
+let test = fetch(`https://developer.nps.gov/api/v1/passportstamplocations?q=${string}&limit=5&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`)
+.then(function(response){
     console.log("response.json():", response)
     response.json().then(function (data){
     console.log("data:", data)
