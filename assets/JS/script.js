@@ -49,9 +49,9 @@ function getTWDG() {
 getTWDG();
 // TODO: send state data to trefle api for all plants
 // TODO: fetch plants with TDWG code
-function getPlants() {
+function getPlants(location) {
   fetch(
-    `https://trefle.io/api/v1/distributions/CPP/plants?token=CDgScJ83lB1EMvnCVzxGDNghxmPU2IgFoqc_McmRAIc `, 
+    `https://trefle.io/api/v1/distributions/${location}/plants?token=CDgScJ83lB1EMvnCVzxGDNghxmPU2IgFoqc_McmRAIc `, 
         {method: "GET", header: {"Content-Type": "application/json"}}
     
   ).then(function (response) {
