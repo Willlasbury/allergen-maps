@@ -1,199 +1,304 @@
 
-// convert state string to TDWG code
+// sort data from area
+function sortTrefleAreaSearch(array){
 
-function getTWDG() {
-  fetch(
-    `https://api.github.com/repos/tdwg/wgsrpd/contents/109-488-1-ED/2nd%20Edition/tblLevel3.txt`
-  ).then(function (response) {
-    response.json().then(function (data) {
-      let twdg = atob(data.content);
-      let codeArray = twdg.split("\n");
-      codeArray.splice(0, 1);
-      codeArray.splice(codeArray.length - 1, 1);
-      // console.log("codeArray[codeArray.length-1]:", codeArray[codeArray.length-1])
-      let locationArray = [];
-      let twdgArray = [];
-      for (let i = 0; i < codeArray.length; i++) {
-        let location = codeArray[i].split("*")[1];
-        let twdgCode = codeArray[i].split("*")[0];
-        // console.log("codeArray[i]:", codeArray[i]);
-        // console.log("twdgCode:", twdgCode);
-        locationArray.push(location.toLowerCase());
-        twdgArray.push(twdgCode);
-      }
-      let locationKey = {};
-
-      locationArray.forEach((element, index) => {
-        locationKey[element] = twdgArray[index];
-      });
-    //   console.log("locationKey['alaska']:", locationKey["virginia"]);
-    // getPlants(locationKey['virginia'])
-    });
-  });
-}
-
-function getPlants(location) {
-  fetch(
-    `https://trefle.io/api/v1/distributions/${location}/plants?token=CDgScJ83lB1EMvnCVzxGDNghxmPU2IgFoqc_McmRAIc `, 
-        {method: "GET", header: {"Content-Type": "application/json"}}
-    
-  ).then(function (response) {
-    response.json().then(function (data) {
-      console.log("data:", data);
-    });
-  });
-}
-
-
-// Save search history to local storage
-var search_history = [];
-var plants = [];
-
-// Element Variables
-var searchButton = document.querySelector("#search-button");
-var searchBox = document.querySelector("#place-search-input");
-var cardContainer = document.querySelector("#card-container");
-
-var searchContainer = document.querySelector(".find-plants-container")
-var resultsPage = document.getElementById("results-page")
-var card = document.getElementsByClassName("plant-card")
-
-
-
-// save search to history
-function saveSearch(global_history) {
-    if (localStorage.setItem('search-history', global_history)) {
-        console.log('HISTORY SAVED SUCCESSFULLY');
-
+    for (let i = 0; i < array.length; i++) {
+        let commonName = array[i].common_name;
+        let scientificName = array[i].scientific_name
+        let plantImage = array[i].image_url
     }
 }
 
-// add search input to search history and append element
-function addToHistory(plant_name) { // fetchNationParkAPI(plant_name)
-    search_history.push(plant_name);
-    var plant = document.createElement("p")
-    plant.className = "button is-light is-warning is-fullwidth is-size-5"
-    plant.innerHTML = plant_name
-    cardContainer.appendChild(plant);
-    return plantName;
-
-}
-
-// fetch to national park api and get park name and state, then return them
-function fetchNationParkAPI(keyword) {
-    var API_URL = `https://developer.nps.gov/api/v1/parks?q=${keyword}&limit=10&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`
-    var url = new URL(API_URL)
-    var state = ''
-    var parkName = ''
-    fetch(url).then(response => response.json()).then(data => {
-        for (var i = 0; i < data.data.length; i++) {
-            console.log('DATA: ', data.data[i].states);
-            console.log('Data ', data.data[i].fullName);
+let data= [
+    {
+        "id": 109482,
+        "common_name": "Common nettle",
+        "slug": "urtica-dioica",
+        "scientific_name": "Urtica dioica",
+        "year": 1753,
+        "bibliography": "Sp. Pl.: 984 (1753)",
+        "author": "L.",
+        "status": "accepted",
+        "rank": "species",
+        "family_common_name": null,
+        "genus_id": 5550,
+        "image_url": "https://bs.plantnet.org/image/o/9db58cbb3538a6b77384f972971d51869228e545",
+        "synonyms": [
+            "Urtica dioica var. vulgaris",
+            "Urtica dioica var. ramosa",
+            "Urtica dioica subsp. eudioica"
+        ],
+        "genus": "Urtica",
+        "family": "Urticaceae",
+        "links": {
+            "self": "/api/v1/species/urtica-dioica",
+            "plant": "/api/v1/plants/urtica-dioica",
+            "genus": "/api/v1/genus/urtica"
         }
+    },
+    {
+        "id": 227114,
+        "common_name": "Barnyard grass",
+        "slug": "dactylis-glomerata",
+        "scientific_name": "Dactylis glomerata",
+        "year": 1753,
+        "bibliography": "Sp. Pl.: 71 (1753)",
+        "author": "L.",
+        "status": "accepted",
+        "rank": "species",
+        "family_common_name": null,
+        "genus_id": 10915,
+        "image_url": "https://bs.plantnet.org/image/o/f84a7d4fc2e627ccd451f568479b1932c2b2d900",
+        "synonyms": [
+            "Bromus glomeratus",
+            "Koeleria dactylis",
+            "Festuca glomerata",
+            "Trachypoa vulgaris",
+            "Phalaris glomerata",
+            "Limnetis glomerata"
+        ],
+        "genus": "Dactylis",
+        "family": "Poaceae",
+        "links": {
+            "self": "/api/v1/species/dactylis-glomerata",
+            "plant": "/api/v1/plants/dactylis-glomerata",
+            "genus": "/api/v1/genus/dactylis"
+        }
+    }]
+    class Plant{
+        constructor(commonName, scientificName, plantImage){
+            this.commonName=commonName;
+            this.scientificName=scientificName;
+            this.plantImage = plantImage
+        }}
 
-        // state = data.data[0].parks[0].states;
-        // parkName = data.data[0].parks[0].fullName;
-        // console.log('Park Information: \n', state, "\n", parkName);
-    })
-}
+function sortTrefleAreaSearch(array){
+    let plantArray = []
 
-// Function that calls the trefle API
-function fetchTrefleAPI(keyword) {
-    fetch(`http://URL=>>>>${keyword}`).then(promise => promise.json()).then(data => {
-        console.log(data.results)
-    })
-};
-
-
-// add event listener to search box
-searchBox.addEventListener('keydown', function (event) { // event.preventDefault();
-    var inputEl = event.target;
-    plantName = inputEl.value;
-    console.log(plantName);
-})
-
-// Keyup event listener
-// add event listener to search box
-searchBox.addEventListener('keyup', function (event) { // event.preventDefault();
-    var inputEl = event.target;
-    plantName = inputEl.value;
-    console.log(plantName);
-
-})
-// on keyboard enter, search
-searchBox.addEventListener('keypress', function (event) { // event.preventDefault();
-    event.target
-    if (event.key === "Enter") {
-        event.preventDefault();
-        addToHistory(event.target.value);
-        saveSearch(search_history);
-        fetchNationParkAPI(plantName);
-        console.log('::KEYBOARD:: City Saved To History: ', plantName);
-        // searchBox.value = ''
-
+    for (let i = 0; i < array.length; i++) {
+        let commonName = array[i].common_name;
+        let scientificName = array[i].scientific_name
+        let plantImage = array[i].image_url
+        plant = new Plant(commonName, scientificName, plantImage)
+        plantArray.push(plant)
     }
+    console.log("plantArray:", plantArray)
+return plantArray}
 
-})
+sortTrefleAreaSearch(data)
 
+function displayCards(array){
+    let card = document.createElement('article')
+    let cardTitleH3 = document.createElement('h3')
+    let cardSubTitleH4 = document.createElement('h4')
+    let cardImage = document.createElement('img')
 
-// click event listener for search button
-searchButton.addEventListener('click', function (event) {
-    event.preventDefault();
-    event.target;
-    saveSearch(search_history);
-    addToHistory(plantName);
-    fetchNationParkAPI(plantName);
-    console.log('City Saved To History: ', plantName);
-    searchBox.value = ''
-
-
-});
-
-
-// Auto Complete directly from MapQuest API
-placeSearch({key: 'ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP', container: document.querySelector("#place-search-input")});
+    cardTitleH3.textContent = array.commonName
+    cardSubTitleH4.textContent = array.scientificName
+    card
+    
+} 
 
 
-
-function findPlants(e){
-    e.preventDefault()
-    searchContainer.classList.add('hide')
-    resultsPage.classList.remove('hide')
+function getPlantByName(plantName){
+    fetch(`https://trefle.io/api/v1/plants/${plantName}?token=CDgScJ83lB1EMvnCVzxGDNghxmPU2IgFoqc_McmRAIc`)
 }
 
-function displayPlantInfo(){
-    plants.forEach(function(plants){
-        var plantCard = document.createElement("div")
-        plantCard.classList.add("col", "s6", "m4", "xl2", "plant-card");
-        var card = document.createElement("div")
-        card.classList.add("card", "hoverable", "rounded")
-        var cardImage = document.createElement("div")
-        cardImage.classList.add("card-image")
-        var plantImage = document.createElement("img")
-        plantImage.setAttribute("src", plants[i].imageUrl)
-        var cardContent = document.createElement("div")
-        cardContent.classList.add("card-content")
-        var cardTitle = document.createElement("span")
-        cardTitle.classList.add("card-title", truncate)
-        var scientificName = document.createElement("p")
-        scientificName.classList.add("scientific-name", "truncate")
+let response = {
+    'data': {
+        "common_name": "Barnyard grass",
+        "slug": "dactylis-glomerata",
+        "scientific_name": "Dactylis glomerata",
+        "main_species_id": 227114,
+        "image_url": "https://bs.plantnet.org/image/o/f84a7d4fc2e627ccd451f568479b1932c2b2d900",
+        "year": 1753,
+        "bibliography": "Sp. Pl.: 71 (1753)",
+        "author": "L.",
+        "family_common_name": null,
+        "genus_id": 10915,
+        "observations": "Macaronesia, Medit. to Temp. Eurasia",
+        "vegetable": false,
+        "links": {
+            "self": "/api/v1/plants/dactylis-glomerata",
+            "species": "/api/v1/plants/dactylis-glomerata/species",
+            "genus": "/api/v1/genus/dactylis"
+        },
+        "main_species": {
+            "id": 227114,
+            "common_name": "Barnyard grass",
+            "slug": "dactylis-glomerata",
+            "scientific_name": "Dactylis glomerata",
+            "year": 1753,
+            "bibliography": "Sp. Pl.: 71 (1753)",
+            "author": "L.",
+            "status": "accepted",
+            "rank": "species",
+            "family_common_name": null,
+            "genus_id": 10915,
+            "observations": "Macaronesia, Medit. to Temp. Eurasia",
+            "vegetable": false,
+            "image_url": "https://bs.plantnet.org/image/o/f84a7d4fc2e627ccd451f568479b1932c2b2d900",
+            "genus": "Dactylis",
+            "family": "Poaceae",
+            "duration": null,
+            "edible_part": null,
+            "edible": false,}}}
 
-        resultsPage.appendChild(plantCard)
-          plantCard.appendChild(card)
-            card.appendChild(cardImage)
-              cardImage.appendChild(plantImage)
-            card.appendChild(cardContent)
-              cardContent.appendChild(cardTitle)
-              cardContent.appendChild(scientificName)
-    })
+function sortPlantData(response){
+    let isVegetable = response.data.vegetable
+    return isVegetable
 }
 
 
+// // Save search history to local storage
+// var search_history = [];
+// var plants = [];
 
-let string = 'zion national park'
-let test = fetch(`https://developer.nps.gov/api/v1/passportstamplocations?q=${string}&limit=5&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`).then(function(response){
-    console.log("response.json():", response)
-    response.json().then(function (data){
-    console.log("data:", data)
-})})
+// // Element Variables
+// var searchButton = document.querySelector("#search-button");
+// var searchBox = document.querySelector("#place-search-input");
+// var cardContainer = document.querySelector("#card-container");
+
+// var searchContainer = document.querySelector(".find-plants-container")
+// var resultsPage = document.getElementById("results-page")
+// var card = document.getElementsByClassName("plant-card")
+
+
+
+// // save search to history
+// function saveSearch(global_history) {
+//     if (localStorage.setItem('search-history', global_history)) {
+//         console.log('HISTORY SAVED SUCCESSFULLY');
+
+//     }
+// }
+
+// // add search input to search history and append element
+// function addToHistory(plant_name) { // fetchNationParkAPI(plant_name)
+//     search_history.push(plant_name);
+//     var plant = document.createElement("p")
+//     plant.className = "button is-light is-warning is-fullwidth is-size-5"
+//     plant.innerHTML = plant_name
+//     cardContainer.appendChild(plant);
+//     return plantName;
+
+// }
+
+// // fetch to national park api and get park name and state, then return them
+// function fetchNationParkAPI(keyword) {
+//     var API_URL = `https://developer.nps.gov/api/v1/parks?q=${keyword}&limit=10&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`
+//     var url = new URL(API_URL)
+//     var state = ''
+//     var parkName = ''
+//     fetch(url).then(response => response.json()).then(data => {
+//         for (var i = 0; i < data.data.length; i++) {
+//             console.log('DATA: ', data.data[i].states);
+//             console.log('Data ', data.data[i].fullName);
+//         }
+
+//         // state = data.data[0].parks[0].states;
+//         // parkName = data.data[0].parks[0].fullName;
+//         // console.log('Park Information: \n', state, "\n", parkName);
+//     })
+// }
+
+// // Function that calls the trefle API
+// function fetchTrefleAPI(keyword) {
+//     fetch(`http://URL=>>>>${keyword}`).then(promise => promise.json()).then(data => {
+//         console.log(data.results)
+//     })
+// };
+
+
+// // add event listener to search box
+// searchBox.addEventListener('keydown', function (event) { // event.preventDefault();
+//     var inputEl = event.target;
+//     plantName = inputEl.value;
+//     console.log(plantName);
+// })
+
+// // Keyup event listener
+// // add event listener to search box
+// searchBox.addEventListener('keyup', function (event) { // event.preventDefault();
+//     var inputEl = event.target;
+//     plantName = inputEl.value;
+//     console.log(plantName);
+
+// })
+// // on keyboard enter, search
+// searchBox.addEventListener('keypress', function (event) { // event.preventDefault();
+//     event.target
+//     if (event.key === "Enter") {
+//         event.preventDefault();
+//         addToHistory(event.target.value);
+//         saveSearch(search_history);
+//         fetchNationParkAPI(plantName);
+//         console.log('::KEYBOARD:: City Saved To History: ', plantName);
+//         // searchBox.value = ''
+
+//     }
+
+// })
+
+
+// // click event listener for search button
+// searchButton.addEventListener('click', function (event) {
+//     event.preventDefault();
+//     event.target;
+//     saveSearch(search_history);
+//     addToHistory(plantName);
+//     fetchNationParkAPI(plantName);
+//     console.log('City Saved To History: ', plantName);
+//     searchBox.value = ''
+
+
+// });
+
+
+// // Auto Complete directly from MapQuest API
+// placeSearch({key: 'ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP', container: document.querySelector("#place-search-input")});
+
+
+
+// function findPlants(e){
+//     e.preventDefault()
+//     searchContainer.classList.add('hide')
+//     resultsPage.classList.remove('hide')
+// }
+
+// function displayPlantInfo(){
+//     plants.forEach(function(plants){
+//         var plantCard = document.createElement("div")
+//         plantCard.classList.add("col", "s6", "m4", "xl2", "plant-card");
+//         var card = document.createElement("div")
+//         card.classList.add("card", "hoverable", "rounded")
+//         var cardImage = document.createElement("div")
+//         cardImage.classList.add("card-image")
+//         var plantImage = document.createElement("img")
+//         plantImage.setAttribute("src", plants[i].imageUrl)
+//         var cardContent = document.createElement("div")
+//         cardContent.classList.add("card-content")
+//         var cardTitle = document.createElement("span")
+//         cardTitle.classList.add("card-title", truncate)
+//         var scientificName = document.createElement("p")
+//         scientificName.classList.add("scientific-name", "truncate")
+
+//         resultsPage.appendChild(plantCard)
+//           plantCard.appendChild(card)
+//             card.appendChild(cardImage)
+//               cardImage.appendChild(plantImage)
+//             card.appendChild(cardContent)
+//               cardContent.appendChild(cardTitle)
+//               cardContent.appendChild(scientificName)
+//     })
+// }
+
+
+
+// let string = 'zion national park'
+// let test = fetch(`https://developer.nps.gov/api/v1/passportstamplocations?q=${string}&limit=5&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`).then(function(response){
+//     console.log("response.json():", response)
+//     response.json().then(function (data){
+//     console.log("data:", data)
+// })})
 
