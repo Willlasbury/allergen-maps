@@ -11,10 +11,14 @@ function getParkInfo(natPark) {
   });
 }
 
-//   get twdg codes
+// TODO: return state location
+// TODO: in the future include accesibility and other park specific info
+
+// convert state string to TDWG code
+
 function getTWDG() {
   fetch(
-    `https://api.github.com/repos/tdwg/wgsrpd/contents/109-488-1-ED/2nd%20Edition/tblLevel4.txt`
+    `https://api.github.com/repos/tdwg/wgsrpd/contents/109-488-1-ED/2nd%20Edition/tblLevel3.txt`
   ).then(function (response) {
     response.json().then(function (data) {
       let twdg = atob(data.content);
@@ -23,29 +27,42 @@ function getTWDG() {
       codeArray.splice(codeArray.length - 1, 1);
       // console.log("codeArray[codeArray.length-1]:", codeArray[codeArray.length-1])
       let locationArray = [];
-
+      let twdgArray = [];
       for (let i = 0; i < codeArray.length; i++) {
-        let twdgCode = codeArray[i].split("*")[1];
-        twdgCode.toLowerCase();
-        locationArray.push(twdgCode.toLowerCase());
+        let location = codeArray[i].split("*")[1];
+        let twdgCode = codeArray[i].split("*")[0];
+        // console.log("codeArray[i]:", codeArray[i]);
+        // console.log("twdgCode:", twdgCode);
+        locationArray.push(location.toLowerCase());
+        twdgArray.push(twdgCode);
       }
       let locationKey = {};
 
       locationArray.forEach((element, index) => {
-        locationKey[element] = codeArray[index];
+        locationKey[element] = twdgArray[index];
       });
-      console.log("locationKey['alaska]:", locationKey["virginia"]);
+    //   console.log("locationKey['alaska']:", locationKey["virginia"]);
+    // getPlants(locationKey['virginia'])
     });
   });
 }
-
 getTWDG();
-// TODO: return state location
-// TODO: in the future include accesibility and other park specific info
-
 // TODO: send state data to trefle api for all plants
-// TODO: convert state string to TDWG code
 // TODO: fetch plants with TDWG code
+function getPlants() {
+  fetch(
+    `https://trefle.io/api/v1/distributions/CPP/plants?token=CDgScJ83lB1EMvnCVzxGDNghxmPU2IgFoqc_McmRAIc `, 
+        {method: "GET", header: {"Content-Type": "application/json"}}
+    
+  ).then(function (response) {
+    response.json().then(function (data) {
+      console.log("data:", data);
+    });
+  });
+}
+getPlants()
+
+
 // TODO: return all plants
 
 // TODO: on page load
