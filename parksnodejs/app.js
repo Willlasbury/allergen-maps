@@ -23,7 +23,7 @@ app.use('/img', express.static(__dirname + 'public/img'))
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
-app.get('', (request, response) => { 
+app.get('', (request, response) => {
     response.render('index')
 })
 
