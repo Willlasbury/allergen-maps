@@ -1,8 +1,8 @@
-on: push
+on: [push,pull_request]
 jobs:
   build-node:
     runs-on: ubuntu-latest
-    container: node:14
+    container: node:18.x
     steps:
       - run: node --version
       - run: npm --version
