@@ -192,6 +192,14 @@ body {
     position: relative;
     top: 0;
 }
+
+#quoteBox {
+    width: 100%;
+    position: relative;
+    top: 0px;
+    height: 100px;
+    margin-bottom: 20px;
+}
 #search-button:hover {
     color: var(--text-light);
     margin: 0px;

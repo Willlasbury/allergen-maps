@@ -37,7 +37,22 @@ function findPlants() {
     // modalSearchButton.classList.remove('hide')
 
 }
-
+function getQuote(){
+let getQuote = fetch(
+    `https://api.api-ninjas.com/v1/quotes?category=environmental`,{
+    headers: { 'X-Api-Key': 'zxKEypy5sMHpWaDnRk1H8A==u8OZejnWzsuLY6Om'}}
+    ).then(function(response){
+    response.json().then(function (data){
+        console.log("data:", data)
+    let quote = data[0].quote
+    let author = data[0].author
+    // TODO: append quote to header of main box
+    let someBox = document.querySelector('#quoteBox')
+    console.log("someBox:", someBox)
+    let quoteBox = document.createElement('h2')
+    quoteBox.textContent = `${author}- ${quote}`
+    someBox.appendChild(quoteBox)
+})})}
 
 // create and append plant information
 
@@ -212,24 +227,26 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
         console.log('::KEYBOARD:: City Saved To History: ', plantName);
         searchBox.value = ''
         findPlants()
+        getQuote()
 
     }
 
 })
 
-// click event listener for search button
-searchButton.addEventListener('click', function (event) {
-    event.preventDefault();
-    event.target;
-    saveSearch(search_history);
-    addToHistory(plantName);
-    // fetchNationParkAPI(plantName);
-    console.log('City Saved To History: ', plantName);
-    searchBox.value = ''
-    findPlants()
+// // click event listener for search button
+// searchButton.addEventListener('click', function (event) {
+//     event.preventDefault();
+//     event.target;
+//     saveSearch(search_history);
+//     addToHistory(plantName);
+//     // fetchNationParkAPI(plantName);
+//     console.log('City Saved To History: ', plantName);
+//     searchBox.value = ''
+//     findPlants()
+//     getQuote()
 
 
-});
+// });
 
 
 getData()
