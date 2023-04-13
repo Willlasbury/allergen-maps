@@ -1,3 +1,26 @@
+.plant-card{
+    min-height: 300px;
+    max-height: 300px;
+    overflow: hidden;
+    z-index: -2;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+}
+.plant-image > img{
+    overflow: hidden;
+    z-index: 0;
+    position: relative;
+    display: flex;
+}
+.card-content{
+    z-index: 1;
+    background-color: white;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
 :root {
     --color-primary: rgba(47, 31, 68, 0.842);
     --color-secondary: rgb(7, 56, 112);
@@ -87,7 +110,6 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
     .search-modal{
         background-color: var(--color-light);
@@ -118,7 +140,6 @@ body {
                 .close-btn-small {
                     display: flex;
                     background-color: rgb(248, 67, 67);
-                    font-family: ;
                     width: 30px;
                     height: 30px;
                     color: white;
@@ -148,7 +169,6 @@ body {
                 align-items: center;
             }
             .history{
-
             }
 #hero {
     background-image: url(/public/img/background.jpg);
@@ -251,7 +271,6 @@ body {
                 flex-direction: column;
                 justify-content: space-around;
                 align-items: flex-start;
-
             }
                 .common-name {
                     padding-top: 5px;
@@ -269,7 +288,6 @@ body {
             .close-btn {
                 display: flex;
                 background-color: rgb(248, 67, 67);
-                font-family: ;
                 width: 50px;
                 height: 50px;
                 color: white;

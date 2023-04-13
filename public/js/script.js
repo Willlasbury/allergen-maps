@@ -2,12 +2,13 @@
 // var trefleData = [];
 // get json
 var dataItems = []
-var searchFilter = []
-
-// var dummyArray = fetch('https://dummyjson.com/products/').then(res => res.json()).then(json => console.log(json))
+var searchResults = []
+var lastSearchedItem = []
+var tempResults = []
+var plant_array = []
 
 function getData() {
-    fetch('json/ari.json').then(response => response.json()).then(data => { // ds = JSON.stringify(data);
+    fetch('./public/json/ari.json').then(response => response.json()).then(data => { // ds = JSON.stringify(data);
         for (var i = 0; i < data.length; i++) { // console.log('Common Name:', data[i].common_name);
             dataItems.push(data[i])
 
@@ -15,7 +16,6 @@ function getData() {
 
     })
 };
-
 
 // Save search history to local storage
 var search_history = [];
@@ -33,15 +33,17 @@ var card = document.getElementsByClassName("plant-card")
 function findPlants() {
     searchContainer.classList.add('hide')
     resultsPage.classList.remove('hide')
-    modalSearchButton.classList.remove('hide')
-    searchModal.classList.add('hide')
+
+    // modalSearchButton.classList.remove('hide')
+
 }
 
-// let plantBanana = sortTrefleAreaSearch(banana)
+
 // create and append plant information
-function displayPlantInfo(data) {
-    for (let i = 0; i < data.length; i++) {
-        console.log(i)
+
+function displayPlantInfo(plantArray) {
+    plantArray.forEach(function (plant) {
+
         var plantCard = document.createElement("div")
         plantCard.classList.add("col", "s6", "m4", "xl2", "plant-card");
         var card = document.createElement("div")
@@ -49,24 +51,14 @@ function displayPlantInfo(data) {
         var cardImage = document.createElement("div")
         cardImage.classList.add("card-image", "overflow", "plant-image")
         var plantImage = document.createElement("img")
-        plantImage.classList.add("plant-image")
+
+        plantImage.setAttribute("src", plant.imageUrl)
         var cardContent = document.createElement("div")
         cardContent.classList.add("card-content")
-        var cardTitle = document.createElement("span") 
+        var cardTitle = document.createElement("span")
         cardTitle.classList.add("card-title", "truncate")
         var scienceName = document.createElement("p")
         scienceName.classList.add("scientific-name", "truncate")
-
-        // hidden
-        var plantYear = document.createElement('p')
-        plantYear.classList.add('hide')
-        var plantGenus = document.createElement('p')
-        plantGenus.classList.add('hide')
-        var plantFamily = document.createElement('p')
-        plantFamily = document.createElement('hide')
-        var plantSynonyms = document.createElement('p')
-        plantSynonyms.classList.add('hide')
-
 
         // append data
         resultsPage.appendChild(plantCard)
@@ -78,12 +70,14 @@ function displayPlantInfo(data) {
         cardContent.appendChild(scienceName)
 
         // fill each section with plant data
-        plantImage.setAttribute("src", data[i].plantImage)
-        cardTitle.textContent = data[i].commonName
-        scienceName.textContent = data[i].scientificName
-    }
+        plantImage.setAttribute("src", plant.plantImage)
+        cardTitle.textContent = plant.commonName
+        scienceName.textContent = plant.scientificName
+
+    })
 }
-// displayPlantInfo(plantBanana)
+
+
 // modal elements
 // plant info modal
 var modalButton = document.getElementById("modal-button")
@@ -91,25 +85,25 @@ var closeButton = document.querySelector("#close-button")
 var modal = document.querySelector(".qmodal")
 var searchModal = document.querySelector("#search-modal")
 
-    // search modal
-    var modalSearchButton = document.querySelector(".modal-search-button")
+// search modal
+var modalSearchButton = document.querySelector(".modal-search-button")
 
 
 // modal functions
 
-    // open search modal
-    function openSearch() {
-        searchModal.classList.remove("hide")
-    }
+// open search modal
+function openSearch() {
+    searchModal.classList.remove("hide")
+}
 
-    // close current modal
-    function closeModal() {
-        modal.classList.add("hide")
-    }
+// close current modal
+function closeModal() {
+    modal.classList.add("hide")
+}
 
-        // event listeners
-        modalSearchButton.addEventListener("click", openSearch)
-        closeButton.addEventListener("click", closeModal)
+// event listeners
+modalSearchButton.addEventListener("click", openSearch)
+closeButton.addEventListener("click", closeModal)
 
 // function openSearch
 function openSearch() {
@@ -142,42 +136,35 @@ function addToHistory(plant_name) { // fetchNationParkAPI(plant_name)
 
 }
 
-// fetch to national park api and get park name and state, then return them
-function fetchNationParkAPI(keyword) {
-    var oth = `https://www.mapquestapi.com/search/v2/search?q=${keyword}&key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&maxMatches=10&shapePoints=40.099998,-76.305603&hostedData=mqap.ntpois`
-
-
-    var API_URL = `https://developer.nps.gov/api/v1/parks?q=${keyword}&limit=10&api_key=bh7IwlBKJxYuDvsGfVs2ogc9sumwDTYJJZi11Yea`
-    var url = new URL(oth)
-    var state = ''
-    var parkName = ''
-    fetch(url).then(response => response.json()).then(data => {
-        for (var i = 0; i < data.length; i++) {
-            // console.log('DATA: ', data.data[i].states);
-            // console.log('Data ', data.data[i].fullName);
-            console.log('Data:', data);
-
-        }
-
-        // state = data.data[0].states;
-        // parkName = data.data[0].fullName;
-        // console.log('Park Information: \n', state, "\n", parkName);
-    })
+// create Plant class so we can organize our data
+class Plant {
+    constructor(commonName, scientificName, plantImage, year, genus, family, synonyms) {
+        this.commonName = commonName
+        this.scientificName = scientificName;
+        this.plantImage = plantImage
+        this.year = year
+        this.genus = genus
+        this.family = family
+        this.synonyms = synonyms
+    }
 }
 
-// Function that calls the trefle API
-function fetchTrefleAPI(keyword) {
-    fetch(`http://URL=>>>>${keyword}`).then(promise => promise.json()).then(data => {
-        console.log(data.results)
-    })
-};
-
-// add event listener to search box
-// searchBox.addEventListener('keydown', function (event) { // event.preventDefault();
-//     var inputEl = event.target;
-//     plantName = inputEl.value;
-//     console.log(plantName);
-// })
+// sort through the array of search results and grab all the info we need
+function sortTrefleAreaSearch(array) {
+    let plantArray = []
+    for (let i = 0; i < array.length; i++) {
+        let commonName = array[i].common_name;
+        let scientificName = array[i].scientific_name
+        let plantImage = array[i].image_url
+        let year = array[i].year
+        let genus = array[i].genus
+        let family = array[i].family
+        let synonyms = array[i].synonyms
+        let plant = new Plant(commonName, scientificName, plantImage, year, genus, family, synonyms)
+        plantArray.push(plant)
+    }
+    return plantArray
+}
 
 // Smart Search Feature
 //
@@ -186,64 +173,28 @@ function fetchTrefleAPI(keyword) {
 // filtered_data = data we want to show up in our search query
 // search_filter = items passed to the filter so they can be added to the fi
 function smartSearchAlpha(event, searchable_data =[], search_filter =[]) {
-    //
-    // prevent the page from refreshing
     event.preventDefault();
-    // log each key as it is typed (on keyup so we can account for 'backspace')
     var search_input = event.target.value;
-    // saved the filtered items
     var searched_data = searchable_data.filter((data) => {
-        //
-        // holds filter parameters
         var search_filter_items = "";
-        // iterate forEach filter item and then add them to filter.
         search_filter.forEach((arguments) => {
-            //
-            // before adding them, convert to lowercase and trim them
             search_filter_items += data.hasOwnProperty(arguments) && data[arguments].toLowerCase().trim() + " "
         });
-
-        // use (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys)
-        // use Object.keys(object_to_search).some(index_enumerable_value ex obj[idx_enum_val])
-        // Will return the <value> at that <key> or index [key:value]
         return Object.keys(data).some((key) => {
-            // return the first successful search value  matched
-            // before the values are return, strigify, trim, and filter using the input values
-            // that the user has just currently keyed/typed/pressed, etc (on keyup)
-            // now using the or || operator, we can search mutiple items with matching names not just one
             return((data[key]) !== undefined && data[key] !== null && JSON.stringify(data[key]).toLowerCase().trim().includes(search_input)) || search_filter_items.includes(search_input)
         })
     })
-    // finally return the smartSearch filtered results (Should use function to act on data as it comes in)
-    return console.log('Matched: ', searched_data);
-
-};
-
-function smartSearchBeta(event, searchable_data =[], search_filter =[]) { // prevent the page from reloading
-    event.preventDefault();
-    // get the search input and convert it to lowercase, then trim it
-    var search_input = event.target.value.toLowerCase().trim();
-    // create variable expression to filter data based on the search input and the search filter
-    var searched_data = searchable_data.filter((data) => { // create a string with concatenated values for the type of search filters we need
-        var search_filter_items = search_filter.filter((property) => data.hasOwnProperty(property)).map((property) => data[property].toLowerCase().trim().join(' '));
-        // Now we check to see if the properties inside the data match our search input
-        return Object.keys(data).some((key) => {
-            return((data[key]) !== undefined && data[key] !== null && JSON.stringify(data[key]).toLowerCase().trim().includes(search_input))
-
-        }) || search_filter_items.includes(search_input)
-
-
-    })
-    return console.log('Smart Search Results: ', searched_data)
+    searchResults.unshift(searched_data)
+    console.log('Shifted Items: ', searchResults[0])
+    return;
 
 };
 
 
-// Keyup event listener
-// add event listener to search box
-searchBox.addEventListener('keyup', function (event) { // event.preventDefault();
+// Keyup event listener add event listener to search box
+searchBox.addEventListener('keyup', function (event) {
     var inputEl = event.target;
-    smartSearchBeta(event, dataItems, filter = ['common']);
+    smartSearchAlpha(event, dataItems, filter = ['family']);
     plantName = inputEl.value;
     console.log(plantName);
 })
@@ -255,12 +206,12 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
         event.preventDefault();
         addToHistory(event.target.value);
         saveSearch(search_history);
-        fetchNationParkAPI(plantName);
+        const plantArray = sortTrefleAreaSearch(searchResults[0])
+        console.log("test")
+        displayPlantInfo(plantArray);
         console.log('::KEYBOARD:: City Saved To History: ', plantName);
         searchBox.value = ''
         findPlants()
-        fetchTrefle();
-        console.log('Fetch Data:\n', trefleData);
 
     }
 
@@ -272,7 +223,7 @@ searchButton.addEventListener('click', function (event) {
     event.target;
     saveSearch(search_history);
     addToHistory(plantName);
-    fetchNationParkAPI(plantName);
+    // fetchNationParkAPI(plantName);
     console.log('City Saved To History: ', plantName);
     searchBox.value = ''
     findPlants()
@@ -280,30 +231,5 @@ searchButton.addEventListener('click', function (event) {
 
 });
 
-// Auto Complete directly from MapQuest API
-// function placeSearchCall() {
-//     placeSearch({key: 'ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP', container: document.querySelector("#place-search-input")});
 
-// }
-// placeSearchCall()
-// getData()
-
-
-let getQuote = fetch(
-    `https://api.api-ninjas.com/v1/quotes?category=environmental`,{
-    headers: { 'X-Api-Key': 'zxKEypy5sMHpWaDnRk1H8A==u8OZejnWzsuLY6Om'}}
-    ).then(function(response){
-    response.json().then(function (data){
-        console.log("data:", data)
-    let quote = data[0].quote
-    let author = data[0].author
-    
-    // TODO: append quote to header of main box
-    let someBox = document.querySelector('#hero')
-    let quoteBox = document.createElement('h2')
-    quoteBox.textContent = `${author}- ${quote}`
-    someBox.appendChild(quoteBox)
-})})
-
-
-
+getData()
