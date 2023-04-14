@@ -74,12 +74,12 @@ function displayPlantInfo(plantArray) {
         cardContent.classList.add("card-content")
         var cardTitle = document.createElement("span")
         cardTitle.classList.add("card-title","activator", "grey-text", "text-darken-4",
-         "truncate")
+        "truncate")
         var icon = document.createElement("i")
         icon.classList.add("material-icons", "right")
         icon.textContent = "more_vert"
         var scienceName = document.createElement("p")
-        scienceName.classList.add("truncate")
+        scienceName.classList.add("truncate", "science")
         var cardReveal = document.createElement("div")
         cardReveal.classList.add("card-reveal")
         var cardTitleReveal = document.createElement("span")
@@ -97,11 +97,11 @@ function displayPlantInfo(plantArray) {
         var rowUpperLeft = document.createElement("div")
         rowUpperLeft.classList.add("column-text-list1")
         var rowUpperRight = document.createElement("div")
-        rowUpperRight.classList.add("column-text-list2")
+        rowUpperRight.classList.add("column-text-list2", "famfam")
         var rowLowerLeft = document.createElement("div")
         rowLowerLeft.classList.add("column-text-list1")
         var rowLowerRight = document.createElement("div")
-        rowLowerRight.classList.add("column-text-list2")
+        rowLowerRight.classList.add("column-text-list2", "yeer")
         var favs = document.createElement("button")
         favs.classList.add("favorites")
         favs.textContent = "add"
@@ -144,6 +144,7 @@ function displayPlantInfo(plantArray) {
 
 
 function addToFavorites(plantName){
+
     if (!localStorage.getItem("favorite-plant")) {
         let plantStorage = [];
         plantStorage.push(plantName);
@@ -155,29 +156,40 @@ function addToFavorites(plantName){
           localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
         }
       }
-}
-function getFavorites(){
-    let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
-    return favorites
-}
+    }
+
+
+// function getFavorites(){
+//     let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
+//     return favorites
+// }
 
 function faves(){
-var favoritesBtn = document.getElementsByClassName("favorites")
-console.log(favoritesBtn);
-
-for (var i = 0; i < favoritesBtn.length; i++){
-favoritesBtn[i].addEventListener("click", function(event) {
-    console.log("test")
-
-    var element = event.target.parentNode;
-      var cardImage = element.parentElement
-      var card = cardImage.parentElement
-      var cardTitle = card.querySelector(".card-title").textContent
-      addToFavorites(cardTitle)
-      console.log(cardTitle);
-    
-  })
-}
+    var favoritesBtn = document.getElementsByClassName("favorites")
+    console.log(favoritesBtn);
+    for (var i = 0; i < favoritesBtn.length; i++){
+    favoritesBtn[i].addEventListener("click", function(event) {
+        console.log("test")
+        var element = event.target.parentNode;
+        var cardImage = element.parentElement
+        var image = cardImage.querySelector(".activator").getAttribute('src')
+        var card = cardImage.parentElement
+        var cardTitle = card.querySelector(".card-title")
+        var plantName = cardTitle.textContent
+        var scientificName = card.querySelector(".science").textContent
+        var familyName = card.querySelector(".famfam").textContent
+        var year = card.querySelector(".yeer").textContent
+        addToFavorites(cardTitle)
+        console.log(plantName)
+        console.log(scientificName)
+        console.log(familyName)
+        console.log(year)
+        console.log(image)
+        let plant = new Plant(plantName, scientificName, image, year, familyName)
+        console.log(plant)
+        addToFavorites(plant)
+    })
+    }
 }
 
 
