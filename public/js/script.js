@@ -183,8 +183,8 @@ function closeModal() {
 }
 
 // hide/unhide search modal
-// modalSearchButton.addEventListener("click", openSearch)
-// closeButton.addEventListener("click", closeModal)
+modalSearchButton.addEventListener("click", openSearch)
+closeButton.addEventListener("click", closeModal)
 
 // save search to history
 function saveSearch(global_history) {
@@ -330,7 +330,7 @@ function displayFavorites(event) {
   const plantArray = smartSearchAlpha(favoritePlants);
   displayPlantInfo(plantArray);
 }
-displayFavorites();
+// displayFavorites();
 // // click event listener for search button
 searchButton.addEventListener("click", function (event) {
   event.preventDefault();
@@ -344,17 +344,5 @@ searchButton.addEventListener("click", function (event) {
   findPlants();
   getQuote();
 });
-
-function getCatFact() {
-  fetch("https://meowfacts.herokuapp.com/").then(function (response) {
-    response.json().then(function (data) {
-      let catFact = data.data[0];
-      let catSec = document.querySelector("#cat-facts");
-      let catH3 = document.createElement("h3");
-      catH3.textContent = catFact;
-      catSec.appendChild(catH3)
-    });
-  });
-}
 
 getData();
