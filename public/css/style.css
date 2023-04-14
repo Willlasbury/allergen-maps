@@ -45,6 +45,9 @@ body {
 .rounded {
     border-radius: 10px;
 }
+p {
+    padding: 10px;
+}
 .flex {
     display: flex;
 }
