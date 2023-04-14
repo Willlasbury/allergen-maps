@@ -36,7 +36,7 @@ function findPlants() {
   searchContainer.classList.add("hide");
   resultsPage.classList.remove("hide");
 
-  // modalSearchButton.classList.remove('hide')
+
 }
 function getQuote() {
   let getQuote = fetch(
@@ -109,82 +109,109 @@ function displayPlantInfo(plantArray) {
     var rowUpperLeft = document.createElement("div");
     rowUpperLeft.classList.add("column-text-list1");
     var rowUpperRight = document.createElement("div");
-    rowUpperRight.classList.add("column-text-list2");
+    rowUpperRight.classList.add("column-text-list2", "famfam");
     var rowLowerLeft = document.createElement("div");
     rowLowerLeft.classList.add("column-text-list1");
     var rowLowerRight = document.createElement("div");
-    rowLowerRight.classList.add("column-text-list2");
+    rowLowerRight.classList.add("column-text-list2", "yeer");
+        var favs = document.createElement("button")
+        favs.classList.add("favorites")
+        favs.textContent = "add"
 
-    // append data
-    resultsPage.appendChild(plantCard);
-    plantCard.appendChild(card);
-    card.appendChild(cardImage);
-    cardImage.appendChild(plantImage);
-    card.appendChild(cardContent);
-    cardContent.appendChild(cardTitle);
-    cardTitle.appendChild(icon);
-    cardContent.appendChild(scienceName);
-    card.appendChild(cardReveal);
-    cardReveal.appendChild(cardTitleReveal);
-    cardTitleReveal.appendChild(closeReveal);
-    cardReveal.appendChild(infoReveal);
-    infoReveal.appendChild(revealContent);
-    revealContent.appendChild(revealRowDark);
-    revealRowDark.appendChild(rowUpperLeft);
-    revealRowDark.appendChild(rowUpperRight);
-    revealContent.appendChild(revealRowLight);
-    revealRowLight.appendChild(rowLowerLeft);
-    revealRowLight.appendChild(rowLowerRight);
+        // append data
+        resultsPage.appendChild(plantCard)
+            plantCard.appendChild(card)
+                card.appendChild(cardImage)
+                    cardImage.appendChild(plantImage)
+                card.appendChild(cardContent)
+                    cardContent.appendChild(cardTitle)
+                        cardTitle.appendChild(icon)
+                    cardContent.appendChild(scienceName)
+                        cardImage.appendChild(favs)
+                card.appendChild(cardReveal)
+                    cardReveal.appendChild(cardTitleReveal)
+                        cardTitleReveal.appendChild(closeReveal)
+                    cardReveal.appendChild(infoReveal)
+                        infoReveal.appendChild(revealContent)
+                            revealContent.appendChild(revealRowDark)
+                                revealRowDark.appendChild(rowUpperLeft)
+                                revealRowDark.appendChild(rowUpperRight)
+                            revealContent.appendChild(revealRowLight)
+        revealRowLight.appendChild(rowLowerLeft)
+        revealRowLight.appendChild(rowLowerRight)
 
-    // fill each section with plant data
-    plantImage.setAttribute("src", plant.plantImage);
-    cardTitle.textContent = plant.commonName;
-    scienceName.textContent = plant.scientificName;
-    cardTitleReveal.textContent = plant.commonName;
-    rowUpperLeft.textContent = "Family:";
-    rowUpperRight.textContent = plant.family;
-    rowLowerLeft.textContent = "Year Documented:";
-    rowLowerRight.textContent = plant.year;
-  });
+        // fill each section with plant data
+        plantImage.setAttribute("src", plant.plantImage)
+        cardTitle.textContent = plant.commonName
+        scienceName.textContent = plant.scientificName
+        cardTitleReveal.textContent = plant.commonName
+        rowUpperLeft.textContent = "Family:"
+        rowUpperRight.textContent = plant.family
+        rowLowerLeft.textContent = "Year Documented:"
+        rowLowerRight.textContent = plant.year
+        
+    })
+    faves()
 }
 
-// modal elements
-// plant info modal
-var modalButton = document.getElementById("modal-button");
-var closeButton = document.querySelector("#close-button");
-var modal = document.querySelector(".qmodal");
-var searchModal = document.querySelector("#search-modal");
 
-// search modal
-var modalSearchButton = document.querySelector(".modal-search-button");
+function addToFavorites(plantName){
 
-// modal functions
+    if (!localStorage.getItem("favorite-plant")) {
+        let plantStorage = [];
+        plantStorage.push(plantName);
+        localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
+      } else {
+        let plantStorage = JSON.parse(localStorage.getItem("favorite-plant"));
+        if (!plantStorage.includes(plantName)) {
+          plantStorage.push(plantName);
+          localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
+        }
+      }
+    }
 
-// open search modal
-function openSearch() {
-  searchModal.classList.remove("hide");
+
+// function getFavorites(){
+//     let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
+//     return favorites
+// }
+
+function faves(){
+    var favoritesBtn = document.getElementsByClassName("favorites")
+    console.log(favoritesBtn);
+    for (var i = 0; i < favoritesBtn.length; i++){
+    favoritesBtn[i].addEventListener("click", function(event) {
+        console.log("test")
+        var element = event.target.parentNode;
+        var cardImage = element.parentElement
+        var image = cardImage.querySelector(".activator").getAttribute('src')
+        var card = cardImage.parentElement
+        var cardTitle = card.querySelector(".card-title")
+        var plantName = cardTitle.textContent
+        var scientificName = card.querySelector(".science").textContent
+        var familyName = card.querySelector(".famfam").textContent
+        var year = card.querySelector(".yeer").textContent
+        addToFavorites(cardTitle)
+        console.log(plantName)
+        console.log(scientificName)
+        console.log(familyName)
+        console.log(year)
+        console.log(image)
+        let plant = new Plant(plantName, scientificName, image, year, familyName)
+        console.log(plant)
+        addToFavorites(plant)
+    })
+    }
 }
 
-// close current modal
-function closeModal() {
-  modal.classList.add("hide");
-}
 
-// event listeners
-modalSearchButton.addEventListener("click", openSearch);
-closeButton.addEventListener("click", closeModal);
 
-// function openSearch
-function openSearch() {
-  searchModal.classList.remove("hide");
-}
-function closeModal() {
-  modal.classList.add("hide");
-}
 
-// hide/unhide search modal
-modalSearchButton.addEventListener("click", openSearch)
-closeButton.addEventListener("click", closeModal)
+
+
+
+
+
 
 // save search to history
 function saveSearch(global_history) {
@@ -257,92 +284,82 @@ function sortTrefleAreaSearch(array) {
 // filtered_data = data we want to show up in our search query
 // search_filter = items passed to the filter so they can be added to the fi
 function smartSearchAlpha(event, searchable_data = [], search_filter = []) {
-  event.preventDefault();
-  var search_input = event.target.value;
-  var searched_data = searchable_data.filter((data) => {
-    var search_filter_items = "";
-    search_filter.forEach((arguments) => {
-      search_filter_items +=
-        data.hasOwnProperty(arguments) &&
-        data[arguments].toLowerCase().trim() + " ";
+    event.preventDefault();
+    var search_input = event.target.value;
+    var searched_data = searchable_data.filter((data) => {
+      var search_filter_items = "";
+      search_filter.forEach((arguments) => {
+        search_filter_items +=
+          data.hasOwnProperty(arguments) &&
+          data[arguments].toLowerCase().trim() + " ";
+      });
+      return Object.keys(data).some((key) => {
+        return (
+          (data[key] !== undefined &&
+            data[key] !== null &&
+            JSON.stringify(data[key])
+              .toLowerCase()
+              .trim()
+              .includes(search_input)) ||
+          search_filter_items.includes(search_input)
+        );
+      });
     });
-    return Object.keys(data).some((key) => {
-      return (
-        (data[key] !== undefined &&
-          data[key] !== null &&
-          JSON.stringify(data[key])
-            .toLowerCase()
-            .trim()
-            .includes(search_input)) ||
-        search_filter_items.includes(search_input)
-      );
-    });
-  });
-  searchResults.unshift(searched_data);
-  return;
-}
+    searchResults.unshift(searched_data);
+    return;
+  }
 
 // Keyup event listener add event listener to search box
-searchBox.addEventListener("keyup", function (event) {
-  var inputEl = event.target;
-  smartSearchAlpha(event, dataItems, (filter = ["family"]));
-  plantName = inputEl.value;
-  console.log(plantName);
-});
+searchBox.addEventListener('keyup', function (event) {
+    var inputEl = event.target;
+    smartSearchAlpha(event, dataItems, filter = ['family']);
+    plantName = inputEl.value;
+})
 
 // on keyboard enter, search
-addEventListener("keypress", function (event) {
-  // event.preventDefault();
-  if (event.key === "Enter") {
+addEventListener('keypress', function (event) { // event.preventDefault();
+    if (event.key === "Enter") {
+        event.preventDefault();
+        addToHistory(event.target.value);
+        saveSearch(search_history);
+        const plantArray = sortTrefleAreaSearch(searchResults[0])
+        displayPlantInfo(plantArray);
+        console.log('::KEYBOARD:: City Saved To History: ', plantName);
+        searchBox.value = ''
+        findPlants()
+        getQuote()
+    }
+})
+
+// function favoritePlant(){
+//     // TODO: take plant name from parent
+//     // TODO: add plant name to local storage array
+//     // TODO: use search function in for loop to run through array of strings from memory    
+//     let plantName = document.parentElement.
+// }
+
+
+
+
+// // click event listener for search button
+searchButton.addEventListener('click', function (event) {
     event.preventDefault();
+
     addToHistory(event.target.value);
     saveSearch(search_history);
-    const plantArray = sortTrefleAreaSearch(searchResults[0]);
+    const plantArray = sortTrefleAreaSearch(searchResults[0])
     displayPlantInfo(plantArray);
-    console.log("::KEYBOARD:: City Saved To History: ", plantName);
-    searchBox.value = "";
-    findPlants();
-    getQuote();
-  }
+    searchBox.value = ''
+    findPlants()
+    getQuote()
+
+
 });
 
-function addToFavorites(plantName) {
-  if (!localStorage.getItem("favorite-plant")) {
-    let plantStorage = [];
-    plantStorage.push(plantName);
-    localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
-  } else {
-    let plantStorage = JSON.parse(localStorage.getItem("favorite-plant"));
-    if (!plantStorage.includes(plantName)) {
-      plantStorage.push(plantName);
-      localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
-    }
-  }
-}
+getData()
 
-function getFavorites() {
-  let favorites = JSON.parse(localStorage.getItem("favorite-plant"));
-  return favorites;
-}
 
-function displayFavorites(event) {
-  let favoritePlants = getFavorites();
-  const plantArray = smartSearchAlpha(favoritePlants);
-  displayPlantInfo(plantArray);
-}
-// displayFavorites();
-// // click event listener for search button
-searchButton.addEventListener("click", function (event) {
-  event.preventDefault();
-  addToHistory(event.target.value);
-  saveSearch(search_history);
-  console.log("searchResults[0]:", searchResults[0]);
-  const plantArray = sortTrefleAreaSearch(searchResults[0]);
-  displayPlantInfo(plantArray);
-  console.log("::KEYBOARD:: City Saved To History: ", plantName);
-  searchBox.value = "";
-  findPlants();
-  getQuote();
-});
 
-getData();
+
+
+

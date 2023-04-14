@@ -2,23 +2,47 @@
     min-height: 300px;
     max-height: 300px;
     overflow: hidden;
-    z-index: -2;
     display: flex;
     flex-direction: column-reverse;
     align-items: flex-end;
 }
 .plant-image > img{
     overflow: hidden;
-    z-index: 0;
     position: relative;
     display: flex;
 }
+
 .card-content{
     z-index: 1;
     background-color: white;
     height: 100px;
     display: flex;
     flex-direction: column;
+}
+
+.favorites {
+    display: flex;
+    background-color: gold;
+    width: 30px;
+    height: 30px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    transition: ease .1s;
+    border-radius: 10px;
+    top: 5px;
+    left: 5px;
+    margin-bottom: 5px;
+    box-shadow: inset 0 0 0 0 black;
+    z-index: 100;
+    position: relative;
+    border: solid 1px rgb(255, 202, 122);
+    /* right: 350px; */
+}
+.favorites:hover{
+    background-color: goldenrod;
+    box-shadow: inset 0 0 5px 0 black;
 }
 
 :root {
@@ -45,9 +69,7 @@ body {
 .rounded {
     border-radius: 10px;
 }
-p {
-    padding: 10px;
-}
+
 .flex {
     display: flex;
 }
@@ -57,22 +79,12 @@ p {
     align-items: center;
     position: relative;
 }
-.overflow{
-    overflow: hidden;
-}
+
 .h2 {
     font-size: 20px;
     color: rgb(0, 85, 0);
 }
-.plant-card{
-    min-height: 300px;
-    max-height: 300px;
-    overflow: hidden;
-    z-index: -2;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: flex-end;
-}
+
 .plant-image > img{
     overflow: hidden;
     z-index: 0;
@@ -140,25 +152,7 @@ p {
                 color: white;
                 padding-left: 10px;
             }
-                .close-btn-small {
-                    display: flex;
-                    background-color: rgb(248, 67, 67);
-                    width: 30px;
-                    height: 30px;
-                    color: white;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 25px;
-                    transition: ease .1s;
-                    transform: rotate(-45deg);
-                    border-radius: 100px;
-                    margin-right: 10px;
-                    box-shadow: inset 0 0 0 0 black;
-                }
-                #close-button:hover{
-                    background-color: darkred;
-                    box-shadow: inset 0 0 5px 0 black;
-                }
+               
         .search-modal-body{
             display: flex;
             justify-content: center;
@@ -296,21 +290,7 @@ p {
                     color: rgb(194, 255, 170);
                     padding-bottom: 10px;
                 }
-            .close-btn {
-                display: flex;
-                background-color: rgb(248, 67, 67);
-                width: 50px;
-                height: 50px;
-                color: white;
-                justify-content: center;
-                align-items: center;
-                font-size: 40px;
-                transition: ease .1s;
-                transform: rotate(-45deg);
-                border-radius: 100px;
-                margin-right: 20px;
-                box-shadow: inset 0 0 0 0 black;
-            }
+            
     
             .modal-column-img {
                 display: flex;
