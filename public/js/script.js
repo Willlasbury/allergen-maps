@@ -1,6 +1,4 @@
-// import trefle fetch
-// var trefleData = [];
-// get json
+
 var dataItems = [];
 var searchResults = [];
 var lastSearchedItem = [];
@@ -11,9 +9,7 @@ function getData() {
   fetch("./public/json/ari.json")
     .then((response) => response.json())
     .then((data) => {
-      // ds = JSON.stringify(data);
       for (var i = 0; i < data.length; i++) {
-        // console.log('Common Name:', data[i].common_name);
         dataItems.push(data[i]);
       }
     });
@@ -21,7 +17,6 @@ function getData() {
 
 // Save search history to local storage
 var search_history = [];
-// var plants = [];
 
 // Element Variables
 var searchButton = document.querySelector("#search-button");
@@ -30,6 +25,7 @@ var cardContainer = document.querySelector("#card-container");
 var searchContainer = document.querySelector(".find-plants-container");
 var resultsPage = document.getElementById("results-page");
 var card = document.getElementsByClassName("plant-card");
+
 
 // Hide/Unhide Plant Cards
 function findPlants() {
@@ -52,8 +48,8 @@ function getQuote() {
       // TODO: append quote to header of main box
       let someBox = document.querySelector("#quoteBox");
       console.log("someBox:", someBox);
-      let quoteBox = document.createElement("h2");
-      quoteBox.textContent = `${author}- ${quote}`;
+      let quoteBox = document.createElement("p");
+      quoteBox.textContent = `${quote} -${author}`;
       someBox.appendChild(quoteBox);
     });
   });
@@ -91,7 +87,7 @@ function displayPlantInfo(plantArray) {
     icon.classList.add("material-icons", "right");
     icon.textContent = "more_vert";
     var scienceName = document.createElement("p");
-    scienceName.classList.add("truncate");
+    scienceName.classList.add("truncate", "science");
     var cardReveal = document.createElement("div");
     cardReveal.classList.add("card-reveal");
     var cardTitleReveal = document.createElement("span");
@@ -161,20 +157,24 @@ function addToFavorites(plantName){
         let plantStorage = [];
         plantStorage.push(plantName);
         localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
+        return displayFavoritePlants(plantStorage)
       } else {
         let plantStorage = JSON.parse(localStorage.getItem("favorite-plant"));
         if (!plantStorage.includes(plantName)) {
           plantStorage.push(plantName);
           localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
-        }
+        return displayFavoritePlants(plantStorage)}
       }
+      
     }
 
+function displayFavoritePlants(plantStorage){
+    let plantArray = plantStorage
+    return displayPlantInfo
+}
 
-// function getFavorites(){
-//     let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
-//     return favorites
-// }
+
+
 
 function faves(){
     var favoritesBtn = document.getElementsByClassName("favorites")
@@ -220,16 +220,7 @@ function saveSearch(global_history) {
   }
 }
 
-// add search input to search history and append element
-function addToHistory(plant_name) {
-  // fetchNationParkAPI(plant_name)
-  search_history.push(plant_name);
-  var plant = document.createElement("p");
-  plant.className = "button is-light is-warning is-fullwidth is-size-5";
-  plant.innerHTML = plant_name;
-  // cardContainer.appendChild(plant);
-  return plantName;
-}
+
 
 // create Plant class so we can organize our data
 class Plant {
@@ -320,7 +311,7 @@ searchBox.addEventListener('keyup', function (event) {
 addEventListener('keypress', function (event) { // event.preventDefault();
     if (event.key === "Enter") {
         event.preventDefault();
-        addToHistory(event.target.value);
+        // addToHistory(event.target.value);
         saveSearch(search_history);
         const plantArray = sortTrefleAreaSearch(searchResults[0])
         displayPlantInfo(plantArray);
@@ -331,21 +322,13 @@ addEventListener('keypress', function (event) { // event.preventDefault();
     }
 })
 
-// function favoritePlant(){
-//     // TODO: take plant name from parent
-//     // TODO: add plant name to local storage array
-//     // TODO: use search function in for loop to run through array of strings from memory    
-//     let plantName = document.parentElement.
-// }
-
-
 
 
 // // click event listener for search button
 searchButton.addEventListener('click', function (event) {
     event.preventDefault();
 
-    addToHistory(event.target.value);
+    // addToHistory(event.target.value);
     saveSearch(search_history);
     const plantArray = sortTrefleAreaSearch(searchResults[0])
     displayPlantInfo(plantArray);
