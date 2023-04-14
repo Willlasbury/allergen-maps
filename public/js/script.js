@@ -259,8 +259,7 @@ searchBox.addEventListener('keyup', function (event) {
 })
 
 // on keyboard enter, search
-searchBox.addEventListener('keypress', function (event) { // event.preventDefault();
-    event.target
+addEventListener('keypress', function (event) { // event.preventDefault();
     if (event.key === "Enter") {
         event.preventDefault();
         addToHistory(event.target.value);
@@ -268,7 +267,6 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
         const plantArray = sortTrefleAreaSearch(searchResults[0])
         console.log("test")
         displayPlantInfo(plantArray);
-        console.log('::KEYBOARD:: City Saved To History: ', plantName);
         searchBox.value = ''
         findPlants()
         getQuote()
@@ -278,19 +276,21 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
 })
 
 // // click event listener for search button
-// searchButton.addEventListener('click', function (event) {
-//     event.preventDefault();
-//     event.target;
-//     saveSearch(search_history);
-//     addToHistory(plantName);
-//     // fetchNationParkAPI(plantName);
-//     console.log('City Saved To History: ', plantName);
-//     searchBox.value = ''
-//     findPlants()
-//     getQuote()
+searchButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    addToHistory(event.target.value);
+    saveSearch(search_history);
+    const plantArray = sortTrefleAreaSearch(searchResults[0])
+    console.log("test")
+    displayPlantInfo(plantArray);
+    searchBox.value = ''
+    findPlants()
+    getQuote()
 
 
-// });
+
+
+});
 
 
 getData()
