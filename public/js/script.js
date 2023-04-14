@@ -104,6 +104,7 @@ function displayPlantInfo(plantArray) {
         rowLowerRight.classList.add("column-text-list2")
         var favs = document.createElement("button")
         favs.classList.add("favorites")
+        favs.textContent = "add"
 
         // append data
         resultsPage.appendChild(plantCard)
@@ -114,7 +115,7 @@ function displayPlantInfo(plantArray) {
                     cardContent.appendChild(cardTitle)
                         cardTitle.appendChild(icon)
                     cardContent.appendChild(scienceName)
-                        // scienceName.appendChild(favs)
+                        cardImage.appendChild(favs)
                 card.appendChild(cardReveal)
                     cardReveal.appendChild(cardTitleReveal)
                         cardTitleReveal.appendChild(closeReveal)
@@ -136,8 +137,51 @@ function displayPlantInfo(plantArray) {
         rowUpperRight.textContent = plant.family
         rowLowerLeft.textContent = "Year Documented:"
         rowLowerRight.textContent = plant.year
+        
     })
+    faves()
 }
+
+
+function addToFavorites(plantName){
+    if (!localStorage.getItem("favorite-plant")) {
+        let plantStorage = [];
+        plantStorage.push(plantName);
+        localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
+      } else {
+        let plantStorage = JSON.parse(localStorage.getItem("favorite-plant"));
+        if (!plantStorage.includes(plantName)) {
+          plantStorage.push(plantName);
+          localStorage.setItem("favorite-plant", JSON.stringify(plantStorage));
+        }
+      }
+}
+function getFavorites(){
+    let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
+    return favorites
+}
+
+function faves(){
+var favoritesBtn = document.getElementsByClassName("favorites")
+console.log(favoritesBtn);
+
+for (var i = 0; i < favoritesBtn.length; i++){
+favoritesBtn[i].addEventListener("click", function(event) {
+    console.log("test")
+
+    var element = event.target.parentNode;
+      var cardImage = element.parentElement
+      var card = cardImage.parentElement
+      var cardTitle = card.querySelector(".card-title").textContent
+      addToFavorites(cardTitle)
+      console.log(cardTitle);
+    
+  })
+}
+}
+
+
+
 
 
 // modal elements
@@ -247,7 +291,6 @@ function smartSearchAlpha(event, searchable_data =[], search_filter =[]) {
         })
     })
     searchResults.unshift(searched_data)
-    console.log('Shifted Items: ', searchResults[0])
     return;
 };
 
@@ -257,7 +300,6 @@ searchBox.addEventListener('keyup', function (event) {
     var inputEl = event.target;
     smartSearchAlpha(event, dataItems, filter = ['family']);
     plantName = inputEl.value;
-    console.log(plantName);
 })
 
 // on keyboard enter, search
@@ -267,14 +309,11 @@ addEventListener('keypress', function (event) { // event.preventDefault();
         addToHistory(event.target.value);
         saveSearch(search_history);
         const plantArray = sortTrefleAreaSearch(searchResults[0])
-        console.log("test")
         displayPlantInfo(plantArray);
         searchBox.value = ''
         findPlants()
         getQuote()
-
     }
-
 })
 
 // // click event listener for search button
@@ -283,7 +322,6 @@ searchButton.addEventListener('click', function (event) {
     addToHistory(event.target.value);
     saveSearch(search_history);
     const plantArray = sortTrefleAreaSearch(searchResults[0])
-    console.log("test")
     displayPlantInfo(plantArray);
     searchBox.value = ''
     findPlants()
@@ -296,3 +334,7 @@ searchButton.addEventListener('click', function (event) {
 
 
 getData()
+
+
+
+
