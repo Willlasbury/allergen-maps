@@ -215,8 +215,7 @@ searchBox.addEventListener('keyup', function (event) {
 })
 
 // on keyboard enter, search
-searchBox.addEventListener('keypress', function (event) { // event.preventDefault();
-    event.target
+addEventListener('keypress', function (event) { // event.preventDefault();
     if (event.key === "Enter") {
         event.preventDefault();
         addToHistory(event.target.value);
@@ -224,7 +223,6 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
         const plantArray = sortTrefleAreaSearch(searchResults[0])
         console.log("test")
         displayPlantInfo(plantArray);
-        console.log('::KEYBOARD:: City Saved To History: ', plantName);
         searchBox.value = ''
         findPlants()
         getQuote()
@@ -241,7 +239,6 @@ searchButton.addEventListener('click', function (event) {
     const plantArray = sortTrefleAreaSearch(searchResults[0])
     console.log("test")
     displayPlantInfo(plantArray);
-    console.log('::KEYBOARD:: City Saved To History: ', plantName);
     searchBox.value = ''
     findPlants()
     getQuote()
