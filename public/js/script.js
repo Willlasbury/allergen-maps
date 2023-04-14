@@ -234,19 +234,22 @@ searchBox.addEventListener('keypress', function (event) { // event.preventDefaul
 })
 
 // // click event listener for search button
-// searchButton.addEventListener('click', function (event) {
-//     event.preventDefault();
-//     event.target;
-//     saveSearch(search_history);
-//     addToHistory(plantName);
-//     // fetchNationParkAPI(plantName);
-//     console.log('City Saved To History: ', plantName);
-//     searchBox.value = ''
-//     findPlants()
-//     getQuote()
+searchButton.addEventListener('click', function (event) {
+    event.preventDefault();
+    addToHistory(event.target.value);
+    saveSearch(search_history);
+    const plantArray = sortTrefleAreaSearch(searchResults[0])
+    console.log("test")
+    displayPlantInfo(plantArray);
+    console.log('::KEYBOARD:: City Saved To History: ', plantName);
+    searchBox.value = ''
+    findPlants()
+    getQuote()
 
 
-// });
+
+
+});
 
 
 getData()
