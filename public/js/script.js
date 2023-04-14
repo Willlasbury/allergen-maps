@@ -102,7 +102,8 @@ function displayPlantInfo(plantArray) {
         rowLowerLeft.classList.add("column-text-list1")
         var rowLowerRight = document.createElement("div")
         rowLowerRight.classList.add("column-text-list2")
-
+        var favs = document.createElement("button")
+        favs.classList.add("favorites")
 
         // append data
         resultsPage.appendChild(plantCard)
@@ -113,6 +114,7 @@ function displayPlantInfo(plantArray) {
                     cardContent.appendChild(cardTitle)
                         cardTitle.appendChild(icon)
                     cardContent.appendChild(scienceName)
+                        // scienceName.appendChild(favs)
                 card.appendChild(cardReveal)
                     cardReveal.appendChild(cardTitleReveal)
                         cardTitleReveal.appendChild(closeReveal)
