@@ -322,15 +322,34 @@ addEventListener('keypress', function (event) { // event.preventDefault();
         saveSearch(search_history);
         const plantArray = sortTrefleAreaSearch(searchResults[0])
         displayPlantInfo(plantArray);
+        console.log('::KEYBOARD:: City Saved To History: ', plantName);
         searchBox.value = ''
         findPlants()
         getQuote()
     }
 })
 
+// function favoritePlant(){
+//     // TODO: take plant name from parent
+//     // TODO: add plant name to local storage array
+//     // TODO: use search function in for loop to run through array of strings from memory    
+//     let plantName = document.parentElement.
+// }
+
+function getFavorites(){
+    let favorites = JSON.parse(localStorage.getItem('favorite-plant'))
+    return favorites
+}
+
+function displayFavorites(){
+    let favoritePlants = getFavorites()
+    const plantArray = sortTrefleAreaSearch(favoritePlants)
+        displayPlantInfo(plantArray);
+}
 // // click event listener for search button
 searchButton.addEventListener('click', function (event) {
     event.preventDefault();
+
     addToHistory(event.target.value);
     saveSearch(search_history);
     const plantArray = sortTrefleAreaSearch(searchResults[0])
@@ -338,7 +357,6 @@ searchButton.addEventListener('click', function (event) {
     searchBox.value = ''
     findPlants()
     getQuote()
-
 
 
 
